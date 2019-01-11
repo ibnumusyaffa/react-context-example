@@ -1,28 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import ThemedButton from './ThemedButton';
+import ThemeContext from './ThemeContext';
 
-class App extends Component {
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.toggleTheme = this.toggleTheme.bind(this);
+    this.state = {
+      theme: 'blue',
+      toggleTheme: this.toggleTheme
+    };
+  }
+
+  toggleTheme(value) {
+    this.setState({
+      theme: value
+    });
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
+      <ThemeContext.Provider value={this.state}>
+        <Toolbar />
+      </ThemeContext.Provider>
     );
   }
+}
+
+function Toolbar() {
+  return (
+    <div style={{ backgroundColor: '#cce5ff' }}>
+      <div>toolbar component</div>
+      <ThemeContext.Consumer>
+        {({ theme, toggleTheme }) => <div>context value : {theme}</div>}
+      </ThemeContext.Consumer>
+      <ThemedButton />
+    </div>
+  );
 }
 
 export default App;
